@@ -3,194 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIDCORP | PROJECT GENESIS</title>
+    <title>WIDCORP | SECURE TERMINAL</title>
     <style>
         :root {
             --neon-green: #00ff41;
-            --dark-bg: #050505;
-            --warning-red: #ff0000;
+            --dark-bg: #030303;
+            --warning-red: #cc0000;
         }
 
         body {
             background-color: var(--dark-bg);
             color: var(--neon-green);
             font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 20px;
-            overflow-x: hidden;
+            margin: 0; padding: 20px;
+            text-transform: uppercase;
         }
 
-        /* Effetto Scanline e Disturbo Visivo */
-        body::before {
+        /* Overlay Effetto Tubo Catodico */
+        body::after {
             content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 10;
-            background-size: 100% 3px, 3px 100%;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 100; pointer-events: none; background-size: 100% 3px, 3px 100%;
         }
 
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            border: 1px solid rgba(0, 255, 65, 0.3);
+            max-width: 850px;
+            margin: 20px auto;
+            border: 1px solid #1a1a1a;
             padding: 40px;
-            background: rgba(0, 20, 0, 0.2);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-            position: relative;
+            background: #050505;
+            box-shadow: 0 0 40px rgba(0,0,0,1);
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            text-align: center;
-            letter-spacing: 5px;
-            margin-bottom: 0;
-            text-shadow: 0 0 10px var(--neon-green);
+        .header { border-bottom: 1px solid var(--neon-green); margin-bottom: 30px; padding-bottom: 10px; }
+        
+        .error-msg { color: var(--warning-red); display: none; margin-bottom: 15px; border: 1px solid var(--warning-red); padding: 10px; }
+
+        input {
+            background: transparent; border: 1px solid #333; color: var(--neon-green);
+            padding: 10px; width: 100%; margin: 10px 0; font-family: inherit;
         }
 
-        .classified-stamp {
-            color: var(--warning-red);
-            border: 4px double var(--warning-red);
-            display: inline-block;
-            padding: 10px 20px;
-            font-weight: bold;
-            transform: rotate(-3deg);
-            margin: 25px 0;
-            text-transform: uppercase;
-            opacity: 0.8;
+        button {
+            background: #111; border: 1px solid var(--neon-green); color: var(--neon-green);
+            padding: 10px 20px; cursor: pointer; width: 100%; font-family: inherit;
         }
 
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: rgba(0,0,0,0.5);
+        button:hover { background: var(--neon-green); color: black; }
+
+        .classified-box {
+            border: 2px solid var(--warning-red); color: var(--warning-red);
+            padding: 20px; margin: 20px 0; background: rgba(204, 0, 0, 0.05);
         }
 
-        .data-table th, .data-table td {
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            padding: 12px;
-            text-align: left;
+        .details-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.85em;
         }
 
-        .status-error { color: var(--warning-red); animation: blinker 0.8s linear infinite; }
+        .section-title { color: white; background: #222; padding: 5px; margin-top: 20px; }
 
-        @keyframes blinker { 50% { opacity: 0; } }
-
-        input, button {
-            background: #000;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
-            padding: 12px;
-            font-family: inherit;
-            margin: 10px 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        button:hover {
-            background: var(--neon-green);
-            color: #000;
-            cursor: crosshair;
-            font-weight: bold;
-        }
-
-        .loading-text { font-style: italic; color: #888; }
+        .loading-bar { width: 0%; height: 2px; background: var(--neon-green); margin-top: 10px; transition: width 1s linear; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h1 id="title">WIDCORP</h1>
-            <p style="text-align:center; opacity: 0.7;">SISTEMA DI ARCHIVIAZIONE "GENESIS" - ACCESSO PROIBITO</p>
-        </div>
-
-        <div id="login-section">
-            <p>> INSERIRE CREDENZIALI DI LIVELLO 5...</p>
-            <input type="text" id="user" placeholder="USERNAME" autocomplete="off">
-            <input type="password" id="pass" placeholder="PASSWORD" autocomplete="off">
-            <button onclick="startSequence()">[ ESEGUI DECRIPTAZIONE ]</button>
-        </div>
-
-        <div id="content-section" style="display:none;">
-            <div class="classified-stamp">TOP SECRET // EYES ONLY</div>
-            
-            <p>> <strong>FILE:</strong> GENESIS_OVERVIEW.DOC</p>
-            <p>> <strong>STATO:</strong> <span style="color:white">INIZIALIZZAZIONE RESET MONDIALE</span></p>
-            <p>L'agente G-134 ha raggiunto il punto di saturazione atmosferica del 92%. I soggetti non protetti manifestano i primi sintomi di rianimazione cellulare aggressiva entro 4 ore dal decesso.</p>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>RUOLO</th>
-                        <th>STASI</th>
-                        <th>INTEGRITÀ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>A-112</td><td>Scienziato Capo</td><td>ATTIVA</td><td>100%</td></tr>
-                    <tr><td>A-405</td><td>Coord. Difesa</td><td>ATTIVA</td><td>98%</td></tr>
-                    <tr><td>B-098</td><td>Civile Alpha</td><td><span class="status-error">FALLITA</span></td><td>0%</td></tr>
-                </tbody>
-            </table>
-            
-            <p style="margin-top:30px; border-top: 1px solid #333; padding-top:10px;">
-                <em>"Widcorp: Costruiamo il domani dalle ceneri di oggi."</em>
-            </p>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>WIDCORP INTRANET v8.42</h1>
+        <p>IDENTIFICAZIONE NECESSARIA PER ACCESSO LIVELLO "BLACK-SITE"</p>
     </div>
 
-    <script>
-        // Funzione per generare il ronzio statico (Audio Context)
-        function playStaticNoise() {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const bufferSize = 2 * audioCtx.sampleRate;
-            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const output = noiseBuffer.getChannelData(0);
+    <div id="login-form">
+        <div id="error-box" class="error-msg">ACCESSO NEGATO: CREDENZIALI ERRATE O SCADUTE.</div>
+        <p>> USERNAME:</p>
+        <input type="text" id="user" placeholder="..." autocomplete="off">
+        <p>> SECURITY TOKEN (PASS):</p>
+        <input type="password" id="pass" placeholder="..." autocomplete="off">
+        <button onclick="checkCredentials()">[ INVIA RICHIESTA DI ACCESSO ]</button>
+        <div id="progress" class="loading-bar"></div>
+    </div>
 
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = Math.random() * 2 - 1;
-            }
+    <div id="secure-data" style="display:none;">
+        <div class="classified-box">
+            <h2 style="margin:0;">TOP SECRET: PROJECT GENESIS</h2>
+            <p>AUTORIZZAZIONE: OCCHI DEL CONSIGLIO WIDCORP</p>
+        </div>
 
-            const whiteNoise = audioCtx.createBufferSource();
-            whiteNoise.buffer = noiseBuffer;
-            whiteNoise.loop = true;
+        <div class="section-title">DETTAGLI AGENTE PATOGENO: G-134</div>
+        <p>Il virus **G-134** non è una mutazione naturale. È un ibrido sintetico a base prionica che agisce sul lobo frontale. 
+           In caso di morte clinica, il virus riattiva le funzioni motorie primarie tramite stimolazione elettrica costante del midollo spinale.</p>
 
-            const gainNode = audioCtx.createGain();
-            // VOLUME BASSO (0.02 è circa il 2%)
-            gainNode.gain.value = 0.02; 
+        <div class="details-grid">
+            <div style="border: 1px solid #333; padding: 10px;">
+                <strong>PROTOCOLLO IBERNAZIONE</strong><br>
+                Sito: Bunker Orion-9<br>
+                Soggetti: 144 Prescelti<br>
+                Metodo: Azoto liquido + inibitori cellulari.<br>
+                Status: **STABILE**
+            </div>
+            <div style="border: 1px solid #333; padding: 10px;">
+                <strong>ERADICAZIONE ESTERNA</strong><br>
+                Stato Infezione: 94.8%<br>
+                Città attive: 0<br>
+                Obiettivo: Bonifica totale entro l'anno 2028 tramite carestia indotta.
+            </div>
+        </div>
 
-            whiteNoise.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            whiteNoise.start();
-        }
+        <div class="section-title">LOG DI SISTEMA</div>
+        <p style="font-size: 0.8em; color: #666;">
+            - Ore 04:00: Sigillatura Bunker 01 completata.<br>
+            - Ore 06:12: Rilevata breccia nel settore medico. Soggetti infetti soppressi.<br>
+            - Ore 09:45: Avvio sequenza di stasi per i Dirigenti Widcorp.
+        </p>
 
-        function startSequence() {
-            // Avvia il ronzio
-            playStaticNoise();
+        <button onclick="location.reload()" style="margin-top:20px; width: auto; border: 1px dotted red; color: red;">[ CHIUDI SESSIONE E CANCELLA TRACCE ]</button>
+    </div>
+</div>
 
-            const loginSection = document.getElementById('login-section');
-            const contentSection = document.getElementById('content-section');
-            const title = document.getElementById('title');
+<script>
+    function playLowStatic() {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bufferSize = audioCtx.sampleRate * 2;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) { output[i] = Math.random() * 2 - 1; }
 
-            loginSection.innerHTML = "<p class='loading-text'>> CONNETTENDO AI SERVER SOTTERRANEI...</p>";
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = 0.005; // VOLUME BASSISSIMO
+
+        whiteNoise.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        whiteNoise.start();
+    }
+
+    function checkCredentials() {
+        const u = document.getElementById('user').value;
+        const p = document.getElementById('pass').value;
+        const bar = document.getElementById('progress');
+        const err = document.getElementById('error-box');
+
+        // LE TUE CREDENZIALI
+        if (u === "WID-ADMIN" && p === "GENESIS_ORION_2026") {
+            playLowStatic();
+            err.style.display = "none";
+            bar.style.width = "100%";
             
             setTimeout(() => {
-                loginSection.innerHTML = "<p class='loading-text'>> BYPASSING PROTOCOLLO BIO-METRICO...</p>";
-                title.style.color = "red";
-            }, 1200);
-
-            setTimeout(() => {
-                loginSection.style.display = 'none';
-                contentSection.style.display = 'block';
-                title.style.color = "var(--neon-green)";
-            }, 3000);
+                document.getElementById('login-form').style.display = "none";
+                document.getElementById('secure-data').style.display = "block";
+            }, 1500);
+        } else {
+            err.style.display = "block";
+            document.getElementById('pass').value = "";
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
