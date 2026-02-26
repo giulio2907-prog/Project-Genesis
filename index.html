@@ -3,155 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIDCORP | ARCHIVIO GENESI Ω</title>
+    <title>WIDCORP | PROJECT GENESIS COMPLETE ARCHIVE</title>
     <style>
         :root {
             --neon-green: #00ff41;
-            --dark-bg: #020202;
+            --dark-bg: #010101;
             --warning-red: #ff0000;
-            --faded-green: rgba(0, 255, 65, 0.15);
+            --faded-green: rgba(0, 255, 65, 0.1);
         }
 
         body {
             background-color: var(--dark-bg);
             color: var(--neon-green);
             font-family: 'Courier New', Courier, monospace;
-            margin: 0; padding: 20px;
-            overflow-x: hidden;
+            margin: 0; padding: 15px;
             font-size: 13px;
+            line-height: 1.4;
         }
 
-        /* Effetto Scanline (Tubo Catodico) */
+        /* Scanline Overlay */
         body::after {
             content: " ";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.01));
             z-index: 1000; pointer-events: none; background-size: 100% 2px, 2px 100%;
         }
 
         .container {
-            max-width: 950px;
+            max-width: 1000px;
             margin: 0 auto;
             border: 1px solid var(--faded-green);
-            padding: 40px;
-            background: #050505;
+            padding: 25px;
+            background: rgba(2, 2, 2, 0.95);
         }
 
-        .header { border-bottom: 2px solid var(--neon-green); margin-bottom: 30px; text-align: center; }
+        .header { border-bottom: 1px solid var(--neon-green); margin-bottom: 20px; padding-bottom: 10px; }
         
         .section-header {
-            background: #111; color: var(--neon-green); border: 1px solid var(--neon-green);
-            padding: 5px 15px; margin: 30px 0 15px 0;
-            font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
+            background: #0a2a0a; color: var(--neon-green); border: 1px solid var(--neon-green);
+            padding: 8px; margin: 30px 0 15px 0;
+            font-weight: bold; text-transform: uppercase;
         }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
         input, button {
             background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green);
-            padding: 12px; width: 100%; margin: 8px 0; font-family: inherit; font-weight: bold;
+            padding: 12px; width: 100%; margin: 8px 0; font-family: inherit;
         }
 
         button:hover { background: var(--neon-green); color: black; cursor: crosshair; }
 
-        .blacklist-table { width: 100%; border-collapse: collapse; color: var(--warning-red); border: 1px solid var(--warning-red); }
-        .blacklist-table td, .blacklist-table th { border: 1px solid rgba(255, 0, 0, 0.2); padding: 8px; text-align: left; }
+        .protocol-box { border-left: 3px solid var(--warning-red); padding: 10px; margin-bottom: 10px; background: rgba(255,0,0,0.05); }
+        .bunker-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85em; }
+        .bunker-table th, .bunker-table td { border: 1px solid #222; padding: 10px; text-align: left; }
+        
+        .status-compromised { color: var(--warning-red); font-weight: bold; }
+        .status-sealed { color: var(--neon-green); }
 
-        .audio-log {
-            background: #000a00; border-left: 4px solid var(--neon-green);
-            padding: 15px; margin-bottom: 15px; font-style: italic; color: #aaffaa;
-        }
-
-        .timestamp { color: white; font-weight: bold; font-family: sans-serif; font-size: 0.8em; margin-right: 10px; }
-
-        .glitch-title { animation: glitch-text 2s infinite; }
-        @keyframes glitch-text {
-            0% { transform: skew(0deg); }
-            2% { transform: skew(10deg); color: red; }
-            4% { transform: skew(-10deg); color: blue; }
-            6% { transform: skew(0deg); }
-        }
-
-        .status-tag { color: white; background: red; padding: 2px 5px; font-size: 0.8em; }
+        .audio-log { background: #050505; border: 1px dotted #333; padding: 15px; margin-bottom: 10px; font-size: 0.9em; font-style: italic; }
+        .timestamp { color: #888; margin-right: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="login-screen">
-        <div class="header">
-            <h1 class="glitch-title">WIDCORP | PROJECT GENESIS</h1>
-            <p>TERMINALE DI CONTROLLO AMMINISTRATIVO - SITO-01</p>
+        <div class="header" style="text-align:center;">
+            <h1>WIDCORP | GENESIS TERMINAL</h1>
+            <p>AUTENTICAZIONE RICHIESTA PER L'ACCESSO AI DATI DI CRINZIONE</p>
         </div>
-        <div style="max-width: 350px; margin: 50px auto; text-align: center;">
-            <p>> INSERIRE CHIAVE CRITTOGRAFICA Ω</p>
-            <input type="text" id="user" placeholder="USER ID (WID-ADMIN)">
-            <input type="password" id="pass" placeholder="PASSWORD">
+        <div style="max-width: 300px; margin: 50px auto;">
+            <input type="text" id="user" placeholder="ADMIN ID">
+            <input type="password" id="pass" placeholder="SECURITY KEY">
             <button onclick="unlock()">[ LOGIN ]</button>
-            <p id="err" style="color:red; display:none; margin-top: 15px;">ERRORE: ACCESSO NEGATO. PROTOCOLLO DI TRACCIAMENTO ATTIVATO.</p>
+            <p id="err" style="color:red; display:none; text-align:center;">ERRORE CRITICO: CREDENZIALI NON VALIDE.</p>
         </div>
     </div>
 
     <div id="main-content" style="display:none;">
         <div class="header">
-            <h1>DOSSIER CLASSIFICATO: GENESIS</h1>
-            <p>LIVELLO DI SICUREZZA: EYES ONLY (W-DIR)</p>
+            <h1>SISTEMA CENTRALE: PROJECT GENESIS</h1>
+            <p>STATO ATTUALE: MONDO ESTERNO COMPROMESSO - PROTOCOLLO ARCA ATTIVO</p>
         </div>
 
-        <div class="section-header">1. AGENTE G-134 - STATO EVOLUTIVO</div>
-        <p>Il virus ha completato la fase di mutazione aerea. La popolazione civile è stata ridotta del 98.4%. I "Soggetti Post-Vitali" mostrano un'attività cerebrale minima concentrata esclusivamente sull'istinto predatorio.</p>
+        <div class="section-header">1. REPORT PROTOCOLLI DI CONTENIMENTO (FALLITI)</div>
+        <div class="protocol-box">
+            <strong>PROTOCOLLO "MURO DI FERRO" (Ore 12-36)</strong><br>
+            Tentativo di quarantena delle principali metropoli tramite barriere militari. 
+            <em>Esito: Fallito.</em> L'Agente G-134 è risultato essere trasmissibile attraverso i condotti di ventilazione sotterranei.
+        </div>
+        <div class="protocol-box">
+            <strong>PROTOCOLLO "PURIFICAZIONE TERMICA" (Ore 48-72)</strong><br>
+            Bombardamento incendiario dei focolai primari (Zone Zero). 
+            <em>Esito: Fallito.</em> Il calore ha accelerato la dispersione delle spore virali nell'alta atmosfera.
+        </div>
 
-        <div class="section-header">2. BLACKLIST: SOGGETTI NON IDONEI ALLA SALVEZZA</div>
-        <p>Individui la cui presenza comprometterebbe l'ordine sociale nel "Nuovo Mondo". Da escludere da ogni protocollo di evacuazione o stasi.</p>
-        <table class="blacklist-table">
+        <div class="section-header">2. REGISTRO SITI DI IBERNAZIONE & CODICI DI SBLOCCO</div>
+        <table class="bunker-table">
             <thead>
-                <tr><th>Soggetto</th><th>Ruolo</th><th>Motivazione Esclusione</th></tr>
+                <tr>
+                    <th>ID SITO</th>
+                    <th>LOCALITÀ</th>
+                    <th>CODICE SBLOCCO</th>
+                    <th>STATO ATTUALE</th>
+                </tr>
             </thead>
             <tbody>
-                <tr><td>L. Moretti</td><td>Attivista Diritti Umani</td><td>Rischio sedizione post-risveglio.</td></tr>
-                <tr><td>Dr. K. Aris</td><td>Ex-Biologo Widcorp</td><td>Conoscenza eccessiva del Protocollo G-134.</td></tr>
-                <tr><td>M. Chen</td><td>Capo Unione Operaia</td><td>Potenziale leader di rivolte lavorative.</td></tr>
-                <tr><td>Tutti i non-soci</td><td>-</td><td>Carenza di quote azionarie Widcorp.</td></tr>
+                <tr><td>SITO-01</td><td>Alpi Svizzere</td><td>`9921-X-GEN`</td><td class="status-sealed">SIGILLATO</td></tr>
+                <tr><td>SITO-04</td><td>Antartide (McMurdo)</td><td>`0043-Z-ARK`</td><td class="status-sealed">SIGILLATO</td></tr>
+                <tr><td>SITO-09</td><td>Nevada (Area 51)</td><td>`ERROR-CORRUPT`</td><td class="status-compromised">INVASO</td></tr>
+                <tr><td>SITO-12</td><td>Mar di Giava (Sott'acqua)</td><td>`1122-Q-WAT`</td><td class="status-sealed">SIGILLATO</td></tr>
             </tbody>
         </table>
 
-        <div class="section-header">3. TRASCRIZIONI AUDIO INTERCETTATE (Settore Civile)</div>
-        
+        <div class="section-header">3. TRASCRIZIONI AUDIO: COLLASSO FINALE</div>
         <div class="audio-log">
-            <span class="timestamp">[T+04:12]</span> "Pronto? C'è qualcuno? Siamo bloccati nel centro commerciale... le porte automatiche non si aprono e la gente fuori... non sembrano persone. Perché Widcorp non risponde al numero di emergenza?" <br>
-            <strong>-- STATO: SEGNALE PERSO (Soggetto presumibilmente terminato)</strong>
+            <span class="timestamp">[T+18:22]</span> <strong>Centrale di Sicurezza Widcorp:</strong> 
+            "Non possiamo aprire le porte del Sito-09. Ci sono migliaia di persone fuori che urlano. Se apriamo, entrano anche quelli che sono già mutati. Procedere con la procedura di distacco termico del perimetro esterno."
         </div>
-
         <div class="audio-log">
-            <span class="timestamp">[T+12:45]</span> "Ho visto un furgone della Widcorp passare davanti al bunker... non si sono fermati. Stanno sigillando tutto dall'interno. Dio ci aiuti, hanno diffuso qualcosa nell'aria, la gente sta cadendo a terra e poi..." <br>
-            <strong>-- STATO: ARCHIVIATO (Fonte: Bunker Orion-9 esterno)</strong>
+            <span class="timestamp">[T+20:05]</span> <strong>Ricercatore Capo (Sito-01):</strong> 
+            "Il Dr. Widmore è in stasi. Il liquido criogenico è stabile. Abbiamo spento i monitor esterni; non c'è più nulla da vedere se non cenere e... movimento. Ci rivediamo tra un secolo."
         </div>
 
-        <div class="section-header">4. PROTOCOLLO ARK: STATO IBERNAZIONE</div>
-        <div class="grid">
-            <div style="border: 1px solid #333; padding: 15px;">
-                <strong>BUNKER ALPHA-1 (ALPI)</strong><br>
-                Ospiti: Dirigenti Widcorp<br>
-                Stato: <span style="color:white; background:green; padding:2px;">SIGILLATO</span><br>
-                Integrità Cryo: 100%
-            </div>
-            <div style="border: 1px solid #333; padding: 15px;">
-                <strong>SITO-09 (NEVADA)</strong><br>
-                Ospiti: Sicurezza & Esercito<br>
-                Stato: <span class="status-tag">BRECCIA RILEVATA</span><br>
-                Integrità Cryo: 42% (Perdita in corso)
-            </div>
-        </div>
+        <div class="section-header">4. LISTA NERA DI ESCLUSIONE PRIORITARIA</div>
+        <p>I seguenti soggetti hanno tentato di hackerare la rete Widcorp. Sono stati marcati per l'eliminazione dai droni sentinella automatici:</p>
+        <ul style="color: var(--warning-red);">
+            <li><strong>Marcus Thorne:</strong> Ex-Capo Sicurezza (Sapeva della data di rilascio).</li>
+            <li><strong>Progetto "Dawn":</strong> Gruppo di scienziati ribelli che cercavano un vaccino.</li>
+            <li><strong>ID Terminati:</strong> 1,244,092 soggetti rilevati in prossimità dei cancelli dei bunker.</li>
+        </ul>
 
-        <button onclick="location.reload()" style="margin-top: 40px; border-color: red; color: red;">CANCELLA SESSIONE E AUTODISTRUGGI LOGS</button>
+        <button onclick="location.reload()" style="margin-top: 40px; border-color: red; color: red;">CHIUDI TERMINALE (WIPE DATA)</button>
     </div>
 </div>
 
 <script>
-    function playBackgroundNoise() {
+    function playStatic() {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const bufferSize = audioCtx.sampleRate * 3;
+        const bufferSize = audioCtx.sampleRate * 2;
         const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
         const output = noiseBuffer.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) { output[i] = Math.random() * 2 - 1; }
@@ -159,7 +151,7 @@
         whiteNoise.buffer = noiseBuffer;
         whiteNoise.loop = true;
         const gainNode = audioCtx.createGain();
-        gainNode.gain.value = 0.002; // Volume estremamente basso, quasi subliminale
+        gainNode.gain.value = 0.0015; // Volume quasi inudibile per l'atmosfera
         whiteNoise.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         whiteNoise.start();
@@ -168,25 +160,18 @@
     function unlock() {
         const u = document.getElementById('user').value;
         const p = document.getElementById('pass').value;
-        const err = document.getElementById('err');
-
         if(u === "WID-ADMIN" && p === "GENESIS_ORION_2026") {
-            playBackgroundNoise();
-            document.getElementById('login-screen').innerHTML = "<h2>DECRIPTANDO DATABASE... SI PREGA DI ATTENDERE.</h2><div style='width:100%; height:2px; background:var(--neon-green); animation: load 1.5s linear;'></div>";
+            playStatic();
+            document.getElementById('login-screen').innerHTML = "<h2>DECRIPTANDO... SOGGETTI IBERNATI RILEVATI: 144.</h2>";
             setTimeout(() => {
                 document.getElementById('login-screen').style.display = "none";
                 document.getElementById('main-content').style.display = "block";
-            }, 1800);
+            }, 1500);
         } else {
-            err.style.display = "block";
-            document.getElementById('pass').value = "";
+            document.getElementById('err').style.display = "block";
         }
     }
 </script>
-
-<style>
-    @keyframes load { from { width: 0%; } to { width: 100%; } }
-</style>
 
 </body>
 </html>
