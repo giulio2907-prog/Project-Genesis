@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIDCORP | SECURE TERMINAL</title>
+    <title>WIDCORP | ARCHIVIO GENESI Ω</title>
     <style>
         :root {
             --neon-green: #00ff41;
-            --dark-bg: #030303;
-            --warning-red: #cc0000;
+            --dark-bg: #020202;
+            --warning-red: #ff0000;
+            --faded-green: rgba(0, 255, 65, 0.15);
         }
 
         body {
@@ -16,154 +17,176 @@
             color: var(--neon-green);
             font-family: 'Courier New', Courier, monospace;
             margin: 0; padding: 20px;
-            text-transform: uppercase;
+            overflow-x: hidden;
+            font-size: 13px;
         }
 
-        /* Overlay Effetto Tubo Catodico */
+        /* Effetto Scanline (Tubo Catodico) */
         body::after {
             content: " ";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            z-index: 100; pointer-events: none; background-size: 100% 3px, 3px 100%;
+            z-index: 1000; pointer-events: none; background-size: 100% 2px, 2px 100%;
         }
 
         .container {
-            max-width: 850px;
-            margin: 20px auto;
-            border: 1px solid #1a1a1a;
+            max-width: 950px;
+            margin: 0 auto;
+            border: 1px solid var(--faded-green);
             padding: 40px;
             background: #050505;
-            box-shadow: 0 0 40px rgba(0,0,0,1);
         }
 
-        .header { border-bottom: 1px solid var(--neon-green); margin-bottom: 30px; padding-bottom: 10px; }
+        .header { border-bottom: 2px solid var(--neon-green); margin-bottom: 30px; text-align: center; }
         
-        .error-msg { color: var(--warning-red); display: none; margin-bottom: 15px; border: 1px solid var(--warning-red); padding: 10px; }
-
-        input {
-            background: transparent; border: 1px solid #333; color: var(--neon-green);
-            padding: 10px; width: 100%; margin: 10px 0; font-family: inherit;
+        .section-header {
+            background: #111; color: var(--neon-green); border: 1px solid var(--neon-green);
+            padding: 5px 15px; margin: 30px 0 15px 0;
+            font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
         }
 
-        button {
-            background: #111; border: 1px solid var(--neon-green); color: var(--neon-green);
-            padding: 10px 20px; cursor: pointer; width: 100%; font-family: inherit;
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+
+        input, button {
+            background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green);
+            padding: 12px; width: 100%; margin: 8px 0; font-family: inherit; font-weight: bold;
         }
 
-        button:hover { background: var(--neon-green); color: black; }
+        button:hover { background: var(--neon-green); color: black; cursor: crosshair; }
 
-        .classified-box {
-            border: 2px solid var(--warning-red); color: var(--warning-red);
-            padding: 20px; margin: 20px 0; background: rgba(204, 0, 0, 0.05);
+        .blacklist-table { width: 100%; border-collapse: collapse; color: var(--warning-red); border: 1px solid var(--warning-red); }
+        .blacklist-table td, .blacklist-table th { border: 1px solid rgba(255, 0, 0, 0.2); padding: 8px; text-align: left; }
+
+        .audio-log {
+            background: #000a00; border-left: 4px solid var(--neon-green);
+            padding: 15px; margin-bottom: 15px; font-style: italic; color: #aaffaa;
         }
 
-        .details-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.85em;
+        .timestamp { color: white; font-weight: bold; font-family: sans-serif; font-size: 0.8em; margin-right: 10px; }
+
+        .glitch-title { animation: glitch-text 2s infinite; }
+        @keyframes glitch-text {
+            0% { transform: skew(0deg); }
+            2% { transform: skew(10deg); color: red; }
+            4% { transform: skew(-10deg); color: blue; }
+            6% { transform: skew(0deg); }
         }
 
-        .section-title { color: white; background: #222; padding: 5px; margin-top: 20px; }
-
-        .loading-bar { width: 0%; height: 2px; background: var(--neon-green); margin-top: 10px; transition: width 1s linear; }
+        .status-tag { color: white; background: red; padding: 2px 5px; font-size: 0.8em; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h1>WIDCORP INTRANET v8.42</h1>
-        <p>IDENTIFICAZIONE NECESSARIA PER ACCESSO LIVELLO "BLACK-SITE"</p>
+    <div id="login-screen">
+        <div class="header">
+            <h1 class="glitch-title">WIDCORP | PROJECT GENESIS</h1>
+            <p>TERMINALE DI CONTROLLO AMMINISTRATIVO - SITO-01</p>
+        </div>
+        <div style="max-width: 350px; margin: 50px auto; text-align: center;">
+            <p>> INSERIRE CHIAVE CRITTOGRAFICA Ω</p>
+            <input type="text" id="user" placeholder="USER ID (WID-ADMIN)">
+            <input type="password" id="pass" placeholder="PASSWORD">
+            <button onclick="unlock()">[ LOGIN ]</button>
+            <p id="err" style="color:red; display:none; margin-top: 15px;">ERRORE: ACCESSO NEGATO. PROTOCOLLO DI TRACCIAMENTO ATTIVATO.</p>
+        </div>
     </div>
 
-    <div id="login-form">
-        <div id="error-box" class="error-msg">ACCESSO NEGATO: CREDENZIALI ERRATE O SCADUTE.</div>
-        <p>> USERNAME:</p>
-        <input type="text" id="user" placeholder="..." autocomplete="off">
-        <p>> SECURITY TOKEN (PASS):</p>
-        <input type="password" id="pass" placeholder="..." autocomplete="off">
-        <button onclick="checkCredentials()">[ INVIA RICHIESTA DI ACCESSO ]</button>
-        <div id="progress" class="loading-bar"></div>
-    </div>
-
-    <div id="secure-data" style="display:none;">
-        <div class="classified-box">
-            <h2 style="margin:0;">TOP SECRET: PROJECT GENESIS</h2>
-            <p>AUTORIZZAZIONE: OCCHI DEL CONSIGLIO WIDCORP</p>
+    <div id="main-content" style="display:none;">
+        <div class="header">
+            <h1>DOSSIER CLASSIFICATO: GENESIS</h1>
+            <p>LIVELLO DI SICUREZZA: EYES ONLY (W-DIR)</p>
         </div>
 
-        <div class="section-title">DETTAGLI AGENTE PATOGENO: G-134</div>
-        <p>Il virus **G-134** non è una mutazione naturale. È un ibrido sintetico a base prionica che agisce sul lobo frontale. 
-           In caso di morte clinica, il virus riattiva le funzioni motorie primarie tramite stimolazione elettrica costante del midollo spinale.</p>
+        <div class="section-header">1. AGENTE G-134 - STATO EVOLUTIVO</div>
+        <p>Il virus ha completato la fase di mutazione aerea. La popolazione civile è stata ridotta del 98.4%. I "Soggetti Post-Vitali" mostrano un'attività cerebrale minima concentrata esclusivamente sull'istinto predatorio.</p>
 
-        <div class="details-grid">
-            <div style="border: 1px solid #333; padding: 10px;">
-                <strong>PROTOCOLLO IBERNAZIONE</strong><br>
-                Sito: Bunker Orion-9<br>
-                Soggetti: 144 Prescelti<br>
-                Metodo: Azoto liquido + inibitori cellulari.<br>
-                Status: **STABILE**
+        <div class="section-header">2. BLACKLIST: SOGGETTI NON IDONEI ALLA SALVEZZA</div>
+        <p>Individui la cui presenza comprometterebbe l'ordine sociale nel "Nuovo Mondo". Da escludere da ogni protocollo di evacuazione o stasi.</p>
+        <table class="blacklist-table">
+            <thead>
+                <tr><th>Soggetto</th><th>Ruolo</th><th>Motivazione Esclusione</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>L. Moretti</td><td>Attivista Diritti Umani</td><td>Rischio sedizione post-risveglio.</td></tr>
+                <tr><td>Dr. K. Aris</td><td>Ex-Biologo Widcorp</td><td>Conoscenza eccessiva del Protocollo G-134.</td></tr>
+                <tr><td>M. Chen</td><td>Capo Unione Operaia</td><td>Potenziale leader di rivolte lavorative.</td></tr>
+                <tr><td>Tutti i non-soci</td><td>-</td><td>Carenza di quote azionarie Widcorp.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-header">3. TRASCRIZIONI AUDIO INTERCETTATE (Settore Civile)</div>
+        
+        <div class="audio-log">
+            <span class="timestamp">[T+04:12]</span> "Pronto? C'è qualcuno? Siamo bloccati nel centro commerciale... le porte automatiche non si aprono e la gente fuori... non sembrano persone. Perché Widcorp non risponde al numero di emergenza?" <br>
+            <strong>-- STATO: SEGNALE PERSO (Soggetto presumibilmente terminato)</strong>
+        </div>
+
+        <div class="audio-log">
+            <span class="timestamp">[T+12:45]</span> "Ho visto un furgone della Widcorp passare davanti al bunker... non si sono fermati. Stanno sigillando tutto dall'interno. Dio ci aiuti, hanno diffuso qualcosa nell'aria, la gente sta cadendo a terra e poi..." <br>
+            <strong>-- STATO: ARCHIVIATO (Fonte: Bunker Orion-9 esterno)</strong>
+        </div>
+
+        <div class="section-header">4. PROTOCOLLO ARK: STATO IBERNAZIONE</div>
+        <div class="grid">
+            <div style="border: 1px solid #333; padding: 15px;">
+                <strong>BUNKER ALPHA-1 (ALPI)</strong><br>
+                Ospiti: Dirigenti Widcorp<br>
+                Stato: <span style="color:white; background:green; padding:2px;">SIGILLATO</span><br>
+                Integrità Cryo: 100%
             </div>
-            <div style="border: 1px solid #333; padding: 10px;">
-                <strong>ERADICAZIONE ESTERNA</strong><br>
-                Stato Infezione: 94.8%<br>
-                Città attive: 0<br>
-                Obiettivo: Bonifica totale entro l'anno 2028 tramite carestia indotta.
+            <div style="border: 1px solid #333; padding: 15px;">
+                <strong>SITO-09 (NEVADA)</strong><br>
+                Ospiti: Sicurezza & Esercito<br>
+                Stato: <span class="status-tag">BRECCIA RILEVATA</span><br>
+                Integrità Cryo: 42% (Perdita in corso)
             </div>
         </div>
 
-        <div class="section-title">LOG DI SISTEMA</div>
-        <p style="font-size: 0.8em; color: #666;">
-            - Ore 04:00: Sigillatura Bunker 01 completata.<br>
-            - Ore 06:12: Rilevata breccia nel settore medico. Soggetti infetti soppressi.<br>
-            - Ore 09:45: Avvio sequenza di stasi per i Dirigenti Widcorp.
-        </p>
-
-        <button onclick="location.reload()" style="margin-top:20px; width: auto; border: 1px dotted red; color: red;">[ CHIUDI SESSIONE E CANCELLA TRACCE ]</button>
+        <button onclick="location.reload()" style="margin-top: 40px; border-color: red; color: red;">CANCELLA SESSIONE E AUTODISTRUGGI LOGS</button>
     </div>
 </div>
 
 <script>
-    function playLowStatic() {
+    function playBackgroundNoise() {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const bufferSize = audioCtx.sampleRate * 2;
+        const bufferSize = audioCtx.sampleRate * 3;
         const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
         const output = noiseBuffer.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) { output[i] = Math.random() * 2 - 1; }
-
         const whiteNoise = audioCtx.createBufferSource();
         whiteNoise.buffer = noiseBuffer;
         whiteNoise.loop = true;
-
         const gainNode = audioCtx.createGain();
-        gainNode.gain.value = 0.005; // VOLUME BASSISSIMO
-
+        gainNode.gain.value = 0.002; // Volume estremamente basso, quasi subliminale
         whiteNoise.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         whiteNoise.start();
     }
 
-    function checkCredentials() {
+    function unlock() {
         const u = document.getElementById('user').value;
         const p = document.getElementById('pass').value;
-        const bar = document.getElementById('progress');
-        const err = document.getElementById('error-box');
+        const err = document.getElementById('err');
 
-        // LE TUE CREDENZIALI
-        if (u === "WID-ADMIN" && p === "GENESIS_ORION_2026") {
-            playLowStatic();
-            err.style.display = "none";
-            bar.style.width = "100%";
-            
+        if(u === "WID-ADMIN" && p === "GENESIS_ORION_2026") {
+            playBackgroundNoise();
+            document.getElementById('login-screen').innerHTML = "<h2>DECRIPTANDO DATABASE... SI PREGA DI ATTENDERE.</h2><div style='width:100%; height:2px; background:var(--neon-green); animation: load 1.5s linear;'></div>";
             setTimeout(() => {
-                document.getElementById('login-form').style.display = "none";
-                document.getElementById('secure-data').style.display = "block";
-            }, 1500);
+                document.getElementById('login-screen').style.display = "none";
+                document.getElementById('main-content').style.display = "block";
+            }, 1800);
         } else {
             err.style.display = "block";
             document.getElementById('pass').value = "";
         }
     }
 </script>
+
+<style>
+    @keyframes load { from { width: 0%; } to { width: 100%; } }
+</style>
 
 </body>
 </html>
